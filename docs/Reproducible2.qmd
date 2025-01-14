@@ -1,0 +1,30 @@
+---
+title: "Reproducible documents"
+author: "Anne G Jensen"
+format: html
+---
+
+## Basics of R
+
+```{r}
+1 + 1
+```
+
+## Setup code chunk
+```{r setup}
+library(tidyverse)
+```
+
+## About me 
+- Anne Grosbol Jensen 
+- Department of Clinical Biochemistry, AUH
+
+**I** am a *medical* doctor during a PhD
+
+## Simple code 
+```{r}
+3 * 3 
+```
+
+
+
