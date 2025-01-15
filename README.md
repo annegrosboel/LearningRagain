@@ -39,5 +39,5 @@ documentation.
 Hello 
 
 ## Testing for GitHub
-Hello again. Hello Hello
+Hello again. Hello Hello. Hello
 
