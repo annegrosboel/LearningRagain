@@ -18,13 +18,13 @@ library(tidyverse)
 post_meal_data <- read_csv2(here::here("data/post-meal-insulin.csv"))
 ```
 
-## Showing the data
+## Showing the data raw 
 
-```{r}
+```{r first option}
 post_meal_data
 ```
 
-```{r}
+```{r glimpse option}
 glimpse(post_meal_data)
 ```
 
@@ -32,29 +32,28 @@ glimpse(post_meal_data)
 ?colnames
 
 
-## About me 
+## Bold and kursiv 
 - Anne Grosbol Jensen 
 - Department of Clinical Biochemistry, AUH
 
 **I** am a *medical* doctor during a PhD
 
 ## Simple code 
-```{r}
-3 * 3 
+```{r test}
+3 * 3
 ```
 
-```{r}
+## histogram plot 
+```{r Raw}
 ggplot(post_meal_data, aes(x = BMI)) +
   geom_histogram()
-  
 ```
 
-```{r}
+```{r Cap and label}
 #| fig-cap: "Distribution of BMI"
 #| label: fig-BMI-histogram
 ggplot(post_meal_data, aes(x = BMI)) +
   geom_histogram()
-  
 ```
 
 
@@ -62,7 +61,7 @@ ggplot(post_meal_data, aes(x = BMI)) +
 
 
 ## Discrete plots
-```{r}
+```{r geom bar}
 #| fig-cap: "group"
 #| label: fig-group-geombar
 ggplot(post_meal_data, aes(x = Group)) +
@@ -77,3 +76,80 @@ ggplot(post_meal_data, aes(x = glykemi)) +
   geom_bar()
 ```
 According to the @fig-glykemi-geombar most of patients did not have glykemi.
+
+
+```{r}
+post_meal_data |>
+  ggplot(aes(x = Group, fill = glykemi)) +
+  geom_bar()
+```
+
+```{r}
+post_meal_data |>
+  ggplot(aes(x = Group, fill = as.character(glykemi))) +
+  geom_bar()
+```
+
+```{r}
+post_meal_data |>
+  ggplot(aes(x = Group, fill = as.character(glykemi))) +
+  geom_bar(position = position_dodge())
+```
+
+## Putting two plots side by side 
+
+```{r}
+ggplot(post_meal_data, aes(x = BMI)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(post_meal_data, aes(x = glykemi)) +
+  geom_bar()
+```
+
+```{r side-by-side}
+#| label: fig-BMI-glycemia
+#| fig-cap: "BMI and glycemia, side by side"
+#| fig-subcap:
+#| - "Distribution of BMI"
+#| - "Number of those with glycimia"
+#| layout-ncol: 2
+ggplot(post_meal_data, aes(x = BMI)) +
+  geom_histogram()
+
+ggplot(post_meal_data, aes(x = glykemi)) +
+  geom_bar()
+```
+
+
+## Style 
+Hvis man bruger style selection ændrer den det så det bliver skrevet rigtigt 
+
+Brug denne så styler den hele dokumentet: styler:::style_active_file()
+
+
+## Plotting two continuous variable 
+```{r}
+ggplot(post_meal_data, aes(x = BMI, y = auc_pg)) +
+  geom_point()
+```
+
+
+```{r}
+#| fig-cap: "scatterplot showing BMI against AUC of plasma glukose"
+#| label: fig-scat-BMI-glucose
+ggplot(post_meal_data, aes(x = BMI, y = auc_pg)) +
+  geom_point() +
+  geom_smooth()
+```
+
+```{r}
+ggplot(post_meal_data, aes(x = BMI, y = auc_pg)) +
+  geom_point() +
+  geom_hex()
+```
+
+
+
+
