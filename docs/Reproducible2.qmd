@@ -168,10 +168,36 @@ select(post_meal_data, contains("0"))
 ```
 
 ## Renaming specific columns 
-```{r}
+```{
 small_post_meal_data |>
   rename(auc_glucose = auc_pg)
 
 small_post_meal_data |>
   rename(auc_glukose = auc_pg, auc_insulin = auc_ins)
 ```
+
+## Select and rename tasks 
+```{r}
+# Task 1.
+post_meal_data |>
+  select(contains("OGTT"))
+
+# Task 2.
+post_meal_data |>
+  select(contains(".."), -contains("...")) 
+
+post_meal_data |>
+  rename(P.Glucose.minus5.OGTT = P.Glucose..5.OGTT)
+    
+post_meal_data |>
+  rename(Insulin.minus5.OGTT.X = Insulin..5.OGTT.X)
+         
+
+# Task 3.
+post_meal_data |> 
+  select(id, BMI, Length, Weight, Age) |>
+  rename(Height = Length)
+```
+
+
+
