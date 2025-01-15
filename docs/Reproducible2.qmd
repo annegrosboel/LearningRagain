@@ -29,7 +29,7 @@ glimpse(post_meal_data)
 ```
 
 
-
+?colnames
 
 
 ## About me 
@@ -43,5 +43,37 @@ glimpse(post_meal_data)
 3 * 3 
 ```
 
+```{r}
+ggplot(post_meal_data, aes(x = BMI)) +
+  geom_histogram()
+  
+```
+
+```{r}
+#| fig-cap: "Distribution of BMI"
+#| label: fig-BMI-histogram
+ggplot(post_meal_data, aes(x = BMI)) +
+  geom_histogram()
+  
+```
 
 
+@fig-BMI-histogram
+
+
+## Discrete plots
+```{r}
+#| fig-cap: "group"
+#| label: fig-group-geombar
+ggplot(post_meal_data, aes(x = Group)) +
+  geom_bar()
+```
+According to @fig-group-geombar the groups... 
+
+```{r}
+#| fig-cap: "glykemi"
+#| label: fig-glykemi-geombar
+ggplot(post_meal_data, aes(x = glykemi)) +
+  geom_bar()
+```
+According to the @fig-glykemi-geombar most of patients did not have glykemi.
