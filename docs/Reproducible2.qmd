@@ -381,5 +381,58 @@ tidied_post_meal_data |>
   ungroup()
 ```
 
+### make it prettier with knitr
+```{r}
+tidied_post_meal_data |>
+  group_by(Group) |>
+  summarise(
+    mean_age = mean(Age),
+    mean_bmi = mean(BMI)
+  ) |>
+  ungroup() |>
+  knitr::kable()
+```
+
+### Afrunding af decimaler 
+Tallet er hvor mange decimaler man gerne vil have. 
+```{r}
+tidied_post_meal_data |>
+  group_by(Group) |>
+  summarise(
+    mean_age = round(mean(Age), 1),
+    mean_bmi = round(mean(BMI), 1)
+  ) |>
+  ungroup() |>
+  knitr::kable()
+```
+
+### ændring af navne 
+```{r}
+tidied_post_meal_data |>
+  group_by(Group) |>
+  summarise(
+    "Mean Age (yrs)" = round(mean(Age), 1),
+    "Mean BMI (kg/m^2)" = round(mean(BMI), 1)
+  ) |>
+  ungroup() |>
+  knitr::kable()
+```
+
+### + labels 
+```{r}
+#| label: tbl-mean-age-bmi
+#| tbl-cap: "Mean values of Age and BMI for each group"
+tidied_post_meal_data |>
+  group_by(Group) |>
+  summarise(
+    "Mean Age (yrs)" = round(mean(Age), 1),
+    "Mean BMI (kg/m^2)" = round(mean(BMI), 1)
+  ) |>
+  ungroup() |>
+  knitr::kable()
+```
+
+As seen in @tbl-mean-age-bmi yes yes
+
 
 
