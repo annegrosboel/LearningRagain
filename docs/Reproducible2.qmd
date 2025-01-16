@@ -19,9 +19,12 @@ post_meal_data <- read_csv2(here::here("data/post-meal-insulin.csv"))
 
 small_post_meal_data <- select(post_meal_data, id, Age, BMI, Group, auc_pg, auc_ins, glykemi)
 
-tidier_post_meal_data <- small_post_meal_data |> rename(auc_glucose = auc_pg, 
-                                                        auc_insulin = auc_ins) |>
-  filter(glykemi == 0) |> 
+tidier_post_meal_data <- small_post_meal_data |>
+  rename(
+    auc_glucose = auc_pg,
+    auc_insulin = auc_ins
+  ) |>
+  filter(glykemi == 0) |>
   select(-glykemi)
 
 tidied_post_meal_data <- tidier_post_meal_data |>
@@ -29,7 +32,6 @@ tidied_post_meal_data <- tidier_post_meal_data |>
     insulin_glucose_ratio = auc_insulin / auc_glucose,
     Group = if_else(Group == "CTR", "Control", "First-degree relative")
   )
-
 ```
 
 
@@ -198,17 +200,17 @@ post_meal_data |>
 
 # Task 2.
 post_meal_data |>
-  select(contains(".."), -contains("...")) 
+  select(contains(".."), -contains("..."))
 
 post_meal_data |>
   rename(P.Glucose.minus5.OGTT = P.Glucose..5.OGTT)
-    
+
 post_meal_data |>
   rename(Insulin.minus5.OGTT.X = Insulin..5.OGTT.X)
-         
+
 
 # Task 3.
-post_meal_data |> 
+post_meal_data |>
   select(id, BMI, Length, Weight, Age) |>
   rename(Height = Length)
 ```
@@ -216,11 +218,11 @@ post_meal_data |>
 
 ## Filtering data by row 
 ```{r}
-small_post_meal_data |> 
+small_post_meal_data |>
   filter(glykemi == 1)
 
-small_post_meal_data |> 
-  filter(BMI >=25)
+small_post_meal_data |>
+  filter(BMI >= 25)
 
 small_post_meal_data |>
   filter(Group == "CTR")
@@ -232,10 +234,10 @@ TRUE & TRUE
 ```
 
 ```{r}
-small_post_meal_data |> 
-  filter(Group == "CTR" , BMI >= 25)
+small_post_meal_data |>
+  filter(Group == "CTR", BMI >= 25)
 
-small_post_meal_data |> 
+small_post_meal_data |>
   filter(Group == "CTR" | BMI >= 25)
 ```
 
@@ -243,8 +245,10 @@ small_post_meal_data |>
 ## Modify or add column
 ```{r}
 tidier_post_meal_data |>
-  mutate(insulin_glukose_ratio = auc_insulin/auc_glucose,
-         Group = if_else(Group == "CTR", "Control", "First-degres relative"))
+  mutate(
+    insulin_glukose_ratio = auc_insulin / auc_glucose,
+    Group = if_else(Group == "CTR", "Control", "First-degres relative")
+  )
 ```
 
 
@@ -257,7 +261,7 @@ post_meal_data |>
 
 ```{r, task_2}
 post_meal_data |>
-  mutate(Percent_body_fat = Fat.mass.DXA/Weight*100) |> 
+  mutate(Percent_body_fat = Fat.mass.DXA / Weight * 100) |>
   filter(Percent_body_fat > 30)
 ```
 
@@ -265,38 +269,84 @@ post_meal_data |>
 ## Visualizing with jitter plot 
 ```{r}
 tidied_post_meal_data |>
-  mutate(overweight = if_else(BMI >= 25, "Overweight", "Not overweight")) |> 
-  ggplot( aes( x = overweight, y = insulin_glucose_ratio)) + 
+  mutate(overweight = if_else(BMI >= 25, "Overweight", "Not overweight")) |>
+  ggplot(aes(x = overweight, y = insulin_glucose_ratio)) +
   geom_jitter()
 ```
 
 ## Plotting three or more variables 
 
 ```{r}
-tidied_post_meal_data |> 
-  filter(BMI < 30 ) |> 
-  ggplot( aes(x = Age, y = auc_insulin, colour = Group)) + 
+tidied_post_meal_data |>
+  filter(BMI < 30) |>
+  ggplot(aes(x = Age, y = auc_insulin, colour = Group)) +
   geom_point()
 ```
 
 
 ```{r}
-
 ```
 
 
 ```{r}
 tidied_post_meal_data |>
-  filter(BMI < 30) |> 
-  mutate(young = if_else (Age < 40, "Young", "Old")) |>
-ggplot( aes(x = BMI, y = insulin_glucose_ratio, colour = Group)) +
-  geom_point() + 
-  facet_grid( rows = vars(young)) +
-labs( 
-  x = "Body mass index (BMI)",
-y = "Insulin to glukose ratio"
-)
+  filter(BMI < 30) |>
+  mutate(young = if_else(Age < 40, "Young", "Old")) |>
+  ggplot(aes(x = BMI, y = insulin_glucose_ratio, colour = Group)) +
+  geom_point() +
+  facet_grid(rows = vars(young)) +
+  labs(
+    x = "Body mass index (BMI)",
+    y = "Insulin to glukose ratio"
+  )
 ```
 
 
+
+## Exercise: Creating some multi-dimensional plots 
+
 ```{r}
+#| label: fig-multidimensional
+#| fig-cap: "Two, mult-dimensional plots of our data."
+#| fig-subcap:
+#|   - "Distribution of percent body fat by group and age category."
+#|   - "Relationship between BMI and bone mineral density, split by insulin sensitivity."
+#| layout-ncol: 2
+# Task 1.
+post_meal_data |>
+  mutate(
+    percent_body_fat = (Fat.mass.DXA / Weight) * 100,
+    young = if_else(Age < 40, "Young", "Old")
+  ) |>
+  ggplot(aes(x = Group, y = percent_body_fat, colour = young)) +
+  geom_jitter(width = 0.2)
+
+# Task 2.
+post_meal_data |>
+  mutate(
+    insulin_glucose_ratio = (auc_ins / auc_pg),
+    insulin_insensitive = if_else(insulin_glucose_ratio > mean(insulin_glucose_ratio), "insensitive", "sensitive")
+  ) |>
+  ggplot(aes(x = BMI, y = Bone.mineral.DXA)) +
+  geom_point() +
+  geom_smooth() +
+  facet_grid(cols = vars(insulin_insensitive))
+```
+
+
+
+## Changing the colour schemes 
+```{r}
+# Tasks 1. and 2.
+post_meal_data |>
+  mutate(hyperglycemia = if_else(glykemi == 1, "Yes", "No")) |>
+  ggplot(aes(x = Group, fill = hyperglycemia)) +
+  geom_bar(position = position_dodge()) +
+  scale_fill_viridis_d("cividis")
+
+# Tasks 3. and 4.
+post_meal_data |>
+  ggplot(aes(x = auc_pg, y = auc_ins, colour = BMI)) +
+  geom_point() +
+  scale_colour_viridis_c("inferno")
+```
