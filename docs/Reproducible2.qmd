@@ -233,6 +233,14 @@ small_post_meal_data |>
 ```
 
 
+## Modify or add column
+```{r}
+tidier_post_meal_data |>
+  mutate(insulin_glukose_ratio = auc_insulin/auc_glucose,
+         Group = if_else(Group == "CTR", "Control", "First-degres relative"))
+```
+
+
 
 
 
