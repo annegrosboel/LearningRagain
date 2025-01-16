@@ -1095,6 +1095,19 @@ Figure&nbsp;6: Two, mult-dimensional plots of our data.
 </div>
 </div>
 </section>
+<section id="summarise" class="level2">
+<h2 class="anchored" data-anchor-id="summarise">Summarise</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>tidied_post_meal_data <span class="sc">|&gt;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max_bmi =</span> <span class="fu">max</span>(BMI))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  max_bmi
+    &lt;dbl&gt;
+1    33.7</code></pre>
+</div>
+</div>
+</section>
 
 </main>
 <!-- /main column -->
